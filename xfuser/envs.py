@@ -197,7 +197,12 @@ class PackagesEnvChecker:
     def check_aiter(self):
         """
         Checks whether ROCm AITER library is installed
+        because aiter hasn't been enabled on AMD Radeon GPU officially,it will return false directly 
         """
+        gpu_name = torch.cuda.get_device_name().strip()
+        if "Radeon" in gpu_name or "RX" in gpu_name:
+            return False
+        
         try:
             import aiter
             return True
